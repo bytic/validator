@@ -1,5 +1,7 @@
 <?php
 
+declare(strict_types=1);
+
 function valid_url($input)
 {
     return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $input);
@@ -24,7 +26,7 @@ function valid_email($email)
                 // domain part length exceeded
                 $isValid = false;
             } else {
-                if ($local[0] == '.' || $local[$localLen - 1] == '.') {
+                if ('.' == $local[0] || '.' == $local[$localLen - 1]) {
                     // local part starts or ends with '.'
                     $isValid = false;
                 } else {
@@ -88,12 +90,12 @@ function valid_cc_number($cc_number)
         return false;
     }
 
-    /*  mod 10 checksum algorithm  */
+    /*  mod 10 checksum algorithm */
     $revcode = strrev($cc_number);
     $checksum = 0;
 
-    for ($i = 0; $i < strlen($revcode); $i++) {
-        $current_num = intval($revcode[$i]);
+    for ($i = 0; $i < strlen($revcode); ++$i) {
+        $current_num = (int) $revcode[$i];
         if ($i & 1) {  /* Odd  position */
             $current_num *= 2;
         }
@@ -101,11 +103,11 @@ function valid_cc_number($cc_number)
         $checksum += $current_num % 10;
         if ($current_num > 9
         ) {
-            $checksum += 1;
+            ++$checksum;
         }
     }
 
-    if ($checksum % 10 == 0) {
+    if (0 == $checksum % 10) {
         return $card_type;
     } else {
         return false;
@@ -123,7 +125,7 @@ function valid_cnp($cnp)
     }
 
     $mf = $results[1] + 0;
-    if ($mf == 5 || $mf == 6) {
+    if (5 == $mf || 6 == $mf) {
         $year_add = 2000;
     } else {
         $year_add = 1900;
@@ -137,7 +139,7 @@ function valid_cnp($cnp)
     }
 
     $suma = 0;
-    for ($i = 0; $i < 12; $i++) {
+    for ($i = 0; $i < 12; ++$i) {
         $suma += $const[$i] * $cnp[$i];
     }
 
@@ -145,7 +147,7 @@ function valid_cnp($cnp)
 
     $c13 = $cnp[12] + 0;
 
-    if (!(($rest < 10 && $rest == $c13) || ($rest == 10 && $c13 == 1))) {
+    if (!(($rest < 10 && $rest == $c13) || (10 == $rest && 1 == $c13))) {
         return false;
     }
 

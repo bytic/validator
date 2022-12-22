@@ -1,21 +1,23 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Validator\Tests\Functions;
 
 use ByTIC\Validator\Tests\AbstractTest;
 
 /**
- * Class GeneralTest
- * @package ByTIC\Validator\Tests\Functions
+ * Class GeneralTest.
  */
 class GeneralTest extends AbstractTest
 {
     /**
      * @dataProvider data_valid_email
+     *
      * @param string $email
-     * @param bool $valid
+     * @param bool   $valid
      */
-    public function test_valid_email($email, $valid)
+    public function testValidEmail($email, $valid)
     {
         static::assertSame(valid_email($email), $valid);
     }

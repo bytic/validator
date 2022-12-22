@@ -1,13 +1,14 @@
 <?php
 
+declare(strict_types=1);
+
 namespace ByTIC\Validator\Utility;
 
 use ByTIC\Validator\Constraints\Cif;
 use Symfony\Component\Validator\Validation;
 
 /**
- * Class Validator
- * @package ByTIC\Validator\Utility
+ * Class Validator.
  */
 class Validator
 {
@@ -17,13 +18,12 @@ class Validator
     }
 
     /**
-     * @param $value
-     * @param $constraints
      * @return \Symfony\Component\Validator\ConstraintViolationListInterface
      */
     protected static function validate($value, $constraints)
     {
         $validator = Validation::createValidator();
+
         return $validator->validate(
             $value,
             $constraints

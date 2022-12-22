@@ -1,13 +1,23 @@
 {
   "name": "bytic/validator",
-  "license": "MIT",
   "description": "Bytic validator",
+  "license": "MIT",
   "authors": [
     {
       "name": "Gabriel Solomon",
       "email": "hello@gabrielsolomon.ro"
     }
   ],
+  "require": {
+    "ext-json": "*",
+    "egulias/email-validator": "^2.0 || ^3.0",
+    "symfony/validator": "^5.0 || ^6.0"
+  },
+  "require-dev": {
+    "bytic/phpqatools": "^1.0"
+  },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "autoload": {
     "psr-4": {
       "ByTIC\\Validator\\": "src"
@@ -22,16 +32,6 @@
       "ByTIC\\Validator\\Tests\\Fixtures\\": "tests/fixtures"
     }
   },
-  "require": {
-    "ext-json": "*",
-    "symfony/validator": "^5.0 || ^6.0",
-    "egulias/email-validator": "^2.0 || ^3.0"
-  },
-  "require-dev": {
-    "bytic/phpqatools": "^1.0"
-  },
-  "minimum-stability": "dev",
-  "prefer-stable": true,
   "config": {
     "allow-plugins": {
       "phpstan/extension-installer": true,
