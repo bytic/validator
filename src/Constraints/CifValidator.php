@@ -28,6 +28,8 @@ class CifValidator extends ConstraintValidator
             return;
         }
 
+        $value = trim($value);
+
         if (!is_numeric($value) && !is_string($value)) {
             // throw this exception if your validator cannot handle the passed type so that it can be marked as invalid
             throw new UnexpectedValueException($value, 'string');
@@ -71,7 +73,7 @@ class CifValidator extends ConstraintValidator
         $cif = str_pad($cif, 9, '0', STR_PAD_LEFT);
         $suma = 0;
         foreach (self::$controlKey as $i => $key) {
-            $suma += $cif[$i] * $key;
+            $suma += intval($cif[$i]) * intval($key);
         }
         $suma = $suma * 10;
         $rest = (int) ($suma % 11);
