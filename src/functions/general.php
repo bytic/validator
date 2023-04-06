@@ -4,11 +4,19 @@ declare(strict_types=1);
 
 function valid_url($input)
 {
+    $input = (string) $input;
+    if (empty($input)) {
+        return false;
+    }
     return preg_match('|^http(s)?://[a-z0-9-]+(.[a-z0-9-]+)*(:[0-9]+)?(/.*)?$|i', $input);
 }
 
 function valid_email($email)
 {
+    $input = (string) $email;
+    if (empty($email)) {
+        return false;
+    }
     $isValid = true;
     $atIndex = strrpos($email, '@');
     if (is_bool($atIndex) && !$atIndex) {
