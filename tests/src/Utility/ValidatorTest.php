@@ -6,6 +6,7 @@ namespace ByTIC\Validator\Tests\Utility;
 
 use ByTIC\Validator\Tests\AbstractTest;
 use ByTIC\Validator\Utility\Validator;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class ValidatorTest.
@@ -15,6 +16,8 @@ class ValidatorTest extends AbstractTest
     /**
      * @dataProvider cifDataProvider
      */
+
+    #[DataProvider('cifDataProvider')]
     public function testCif($cif, $isValid)
     {
         $violations = Validator::cif($cif);
@@ -25,7 +28,7 @@ class ValidatorTest extends AbstractTest
     /**
      * @return array
      */
-    public function cifDataProvider()
+    public static function cifDataProvider(): array
     {
         return [
             // CIF, isValid

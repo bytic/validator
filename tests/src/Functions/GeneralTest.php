@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ByTIC\Validator\Tests\Functions;
 
 use ByTIC\Validator\Tests\AbstractTest;
+use PHPUnit\Framework\Attributes\DataProvider;
 
 /**
  * Class GeneralTest.
@@ -17,6 +18,7 @@ class GeneralTest extends AbstractTest
      * @param string $email
      * @param bool   $valid
      */
+    #[DataProvider('data_valid_email')]
     public function testValidEmail($email, $valid)
     {
         static::assertSame(valid_email($email), $valid);
@@ -25,7 +27,7 @@ class GeneralTest extends AbstractTest
     /**
      * @return array[]
      */
-    public function data_valid_email()
+    public static function data_valid_email(): array
     {
         return [
             ['test@yahoo.com', true],
