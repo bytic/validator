@@ -5,6 +5,7 @@ declare(strict_types=1);
 namespace ByTIC\Validator\Utility;
 
 use ByTIC\Validator\Constraints\Cif;
+use ByTIC\Validator\Constraints\Cnp\Cnp;
 use Symfony\Component\Validator\Validation;
 
 /**
@@ -15,6 +16,11 @@ class Validator
     public static function cif($value): \Symfony\Component\Validator\ConstraintViolationListInterface
     {
         return self::validate($value, new Cif());
+    }
+
+    public static function cnp($value): \Symfony\Component\Validator\ConstraintViolationListInterface
+    {
+        return self::validate($value, new Cnp());
     }
 
     /**
