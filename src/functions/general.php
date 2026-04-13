@@ -122,42 +122,9 @@ function valid_cc_number($cc_number)
     }
 }
 
-function valid_cnp($cnp)
+function valid_cnp($cnp): bool
 {
-    $const = '279146358279';
     $cnp = trim($cnp);
-
-    preg_match("|^([1256])(\d{2})(\d{2})(\d{2})(\d{6})$|ims", $cnp, $results);
-    if (count($results) < 1) {
-        return false;
-    }
-
-    $mf = $results[1] + 0;
-    if (5 == $mf || 6 == $mf) {
-        $year_add = 2000;
-    } else {
-        $year_add = 1900;
-    }
-    $year = $year_add + $results[2];
-    $month = $results[3] + 0;
-    $day = $results[4] + 0;
-
-    if (!checkdate($month, $day, $year)) {
-        return false;
-    }
-
-    $suma = 0;
-    for ($i = 0; $i < 12; ++$i) {
-        $suma += $const[$i] * $cnp[$i];
-    }
-
-    $rest = $suma % 11;
-
-    $c13 = $cnp[12] + 0;
-
-    if (!(($rest < 10 && $rest == $c13) || (10 == $rest && 1 == $c13))) {
-        return false;
-    }
-
-    return true;
+    $cnpData = new ByTIC\Validator\Constraints\Cnp\Schema\Cnp($cnp);
+    return $cnpData->isValid();
 }
