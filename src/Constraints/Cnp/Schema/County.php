@@ -14,8 +14,8 @@ use DateTime;
  *
  * Special cases:
  *   - Code 70 is a nationwide unique-registration code (always valid).
- *   - Codes 47 and 48 (Bucharest Districts 7 & 8) are now defunct and are only
- *     valid for birth dates on or before 1979-12-19.
+ *   - Codes 47 and 48 are valid for birth dates on or before 1979-12-19 and
+ *     for birth years 2000-2099; in both windows they map to București.
  *
  * @see https://github.com/vimishor/cnp-spec/blob/master/spec.md#jj-component
  * @see https://github.com/vimishor/cnp-php/blob/develop/src/County.php
@@ -25,8 +25,8 @@ class County
 {
     /**
      * Map of valid two-digit county codes to county/district names.
-     * Codes 47 and 48 (now defunct Bucharest Districts 7 and 8) are included
-     * but subject to additional date restrictions.
+     * Codes 47 and 48 are normalized to București and are subject to
+     * additional date restrictions.
      */
     public const CODES = [
         '01' => 'Alba',
@@ -75,8 +75,8 @@ class County
         '44' => 'București Sector 4',
         '45' => 'București Sector 5',
         '46' => 'București Sector 6',
-        '47' => 'București Sector 7 (now defunct)',
-        '48' => 'București Sector 8 (now defunct)',
+        '47' => 'București',
+        '48' => 'București',
         '51' => 'Călărași',
         '52' => 'Giurgiu',
         '70' => 'Cod unic (înregistrare indiferent de județ)',
@@ -90,7 +90,7 @@ class County
 
     /**
      * @param string        $code      Two-digit county code string (e.g. "40")
-     * @param DateTime|null $birthDate Required to validate defunct districts 47 and 48
+     * @param DateTime|null $birthDate Required to validate restricted codes 47 and 48
      */
     public function __construct(string $code, ?DateTime $birthDate = null)
     {
@@ -132,11 +132,16 @@ class County
             return;
         }
 
-        // Defunct Bucharest Districts 7 and 8 are only valid for birth dates
-        // on or before 1979-12-19 (Law no. 31/1979)
+        // Codes 47/48 are valid for historical records up to 1979-12-19
+        // and for modern records in 2000-2099.
         if (in_array($this->code, ['47', '48'], true)) {
             $cutoff = new DateTime('1979-12-19 00:00:00');
-            $this->valid = $birthDate instanceof DateTime && $birthDate <= $cutoff;
+            $this->valid = false;
+
+            if ($birthDate instanceof DateTime) {
+                $year = (int) $birthDate->format('Y');
+                $this->valid = $birthDate <= $cutoff || ($year >= 2000 && $year <= 2099);
+            }
 
             return;
         }

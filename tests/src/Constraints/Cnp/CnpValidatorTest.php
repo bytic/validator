@@ -134,6 +134,25 @@ class CnpValidatorTest extends AbstractTest
         self::assertSame(1850, $cnpData->getBirthYear());
     }
 
+    public function testCodes47And48AreValidIn2000sAndMapToBucharest(): void
+    {
+        $cnp47 = new CnpData('6101110470197');
+        self::assertTrue($cnp47->isValid());
+        self::assertSame('47', $cnp47->getCountyCode());
+        self::assertSame('București', $cnp47->getCounty());
+
+        $cnp48 = new CnpData('6101110480194');
+        self::assertTrue($cnp48->isValid());
+        self::assertSame('48', $cnp48->getCountyCode());
+        self::assertSame('București', $cnp48->getCounty());
+    }
+
+    public function testCodes47And48RemainInvalidFor1990sBirths(): void
+    {
+        self::assertFalse((new CnpData('2901110470190'))->isValid());
+        self::assertFalse((new CnpData('2901110480198'))->isValid());
+    }
+
     public function testNullValueIsIgnored(): void
     {
         $violations = Validator::cnp(null);
@@ -160,6 +179,7 @@ class CnpValidatorTest extends AbstractTest
             ['00000000000000', false],   // 14 digits
             ['0000000000000',  false],   // 13 zeros – invalid S digit
             ['1234567890123',  false],   // wrong checksum
+            ['2901110470190',  false],   // county code 47 invalid for 1900-1999 births
 
             // ---- valid CNPs ----
             // female, born 2011-01-02, Sector 4 Bucharest
@@ -172,6 +192,10 @@ class CnpValidatorTest extends AbstractTest
             ['5010320120033',  true],
             // female, born 1975-11-25, Iași
             ['2751125220045',  true],
+            // female, born 2010-11-10, code 47 accepted for 2000-2099, București
+            ['6101110470197',  true],
+            // female, born 2010-11-10, code 48 accepted for 2000-2099, București
+            ['6101110480194',  true],
             // female, born 1850-02-28, Bucharest (1800s)
             ['4500228400016',  true],
 
