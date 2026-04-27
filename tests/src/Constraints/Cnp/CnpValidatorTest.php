@@ -192,6 +192,7 @@ class CnpValidatorTest extends AbstractTest
             ['5010320120033',  true],
             // female, born 1975-11-25, Iași
             ['2751125220045',  true],
+            ['5150523810833',  true],
             // female, born 2010-11-10, code 47 accepted for 2000-2099, București
             ['6101110470197',  true],
             // female, born 2010-11-10, code 48 accepted for 2000-2099, București

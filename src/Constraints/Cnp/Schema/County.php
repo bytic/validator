@@ -80,6 +80,7 @@ class County
         '51' => 'Călărași',
         '52' => 'Giurgiu',
         '70' => 'Cod unic (înregistrare indiferent de județ)',
+        '81' => 'Cod cetățenii români născuți în străinătate',
     ];
 
     /** The two-digit county code string, e.g. "40". */
@@ -116,6 +117,9 @@ class County
     /** The human-readable county/district name, or null if the code is unknown. */
     public function getName(): ?string
     {
+        if (in_array($this->code, ['70', '81'], true)) {
+            return null;
+        }
         return self::CODES[$this->code] ?? null;
     }
 
